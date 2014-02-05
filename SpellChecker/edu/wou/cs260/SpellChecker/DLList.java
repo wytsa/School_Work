@@ -32,13 +32,16 @@ public class DLList<E>  implements List<E>, Queue<E>, CompareCount{
 			throw new NullPointerException();
 		}
 		else if(isEmpty()){
-			addHeadEmpty(temp);
+			head = temp;
+			tail = temp;
 			size = 1;
 			return true;
 		}
 		else{
-			addTail(temp);
-			size++;
+			temp.prev = tail;
+			temp.prev.next = temp;
+			tail = temp;
+			size = size + 1;
 			return true;
 		}
 	}
@@ -53,20 +56,28 @@ public class DLList<E>  implements List<E>, Queue<E>, CompareCount{
 			throw new IndexOutOfBoundsException();
 		}
 		else if(isEmpty()){
-			addHeadEmpty(temp);
+			head = temp;
+			tail = temp;
 			size = 1;
 		}
 		else if(arg0 == 0){
-			addHead(temp);
+			temp.next = head;
+			temp.next.prev = temp;
+			head = temp;
 			size++;
 		}
 		else if(arg0 == size){
-			addTail(temp);
+			temp.prev = tail;
+			tail.next = temp;
+			tail = temp;
 			size ++;
 		}
 		else{
-			DLLNode current = getNode(arg0);
-			addGeneral(temp, current);
+			DLLNode spot = getNode(arg0);
+			spot.prev.next = temp;
+			temp.prev = spot.prev;
+			temp.next = spot;
+			spot.prev = temp;
 			size ++;
 		}
 	}
@@ -176,17 +187,11 @@ public class DLList<E>  implements List<E>, Queue<E>, CompareCount{
 		}
 		int i = 0;
 		while(i < size){
-			if(arg0.equals(temp.data)){
-				remove(i);
-				return true;
-			}
-			else{
-				temp = temp.next;
-				i++;
-			}
+			temp = temp.next;
+			i++;
 		}
-		return false;
 		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
@@ -311,25 +316,22 @@ public class DLList<E>  implements List<E>, Queue<E>, CompareCount{
 					temp = head;
 				}
 				else{
-					temp = temp.next;
+				temp = temp.next;
 				}
 			}
 			return temp;
 		}
 	}
 	
-/*	private void deleteNode(Object arg0) {
+	private void deleteNode(Object arg0) {
 		// TODO Auto-generated method stub
-		if(arg0.equals(null)){
-			throw new NullPointerException();
-		}
 		// o==null ? get(i)==null : o.equals(get(i))
 		DLLNode temp = new DLLNode();
-		if(temp == null){
+		//if(temp == null){
 			
-		}
+		//}
 		
-	}*/
+	}
 /*	private DLLNode getNode(Object arg0) {
 		
 		DLLNode temp = new DLLNode();
@@ -354,69 +356,22 @@ public class DLList<E>  implements List<E>, Queue<E>, CompareCount{
 			throw new NullPointerException();
 		}
 		else if(temp.prev == null){
-			if(size == 1){
-				clear();
-				size++;
-			}
-			else{
-				deleteHead(temp);
-			}			
+			head = temp.next;
+			head.prev = null;
 			return null;
 		}
 		else if(temp.next == null){
-			deleteTail(temp);
+			tail = temp.prev;
+			tail.next = null;
 			return null;
 		}
 		else{
-			deleteGeneral(temp);
+			temp.prev.next = temp.next;
+			temp.next.prev = temp.prev;
 			return null;
 		}
 	}
- 	
- 	// new add methods
- 	
- 	private void addHeadEmpty(DLLNode temp){
- 		head = temp;
- 		tail = temp;
- 	}
- 	
- 	private void addHead(DLLNode temp){
- 		temp.next = head;
- 		head.prev = temp;
- 		head = temp;
- 	}
- 	
- 	private void addTail(DLLNode temp){
- 		temp.prev = tail;
- 		tail.next = temp;
- 		tail = temp;
- 	}
- 	
- 	private void addGeneral(DLLNode temp, DLLNode current){
- 		temp.next = current;
- 		temp.prev = current.prev;
- 		temp.prev.next = temp;
- 		temp.next.prev = temp;
- 		
- 	}
- 	
- 	// new delete methods
- 	
- 	private void deleteHead(DLLNode temp){
- 		head = temp.next;
- 		head.prev = null;
- 	}
- 	
- 	private void deleteTail(DLLNode temp){
- 		tail = temp.prev;
-		tail.next = null;
- 	}
- 	
- 	private void deleteGeneral(DLLNode temp){
- 		temp.prev.next = temp.next;
- 		temp.next.prev = temp.prev;
- 	}
- 	
+	
 	class DLLNode {
     
 		DLLNode prev;    
@@ -436,12 +391,12 @@ public class DLList<E>  implements List<E>, Queue<E>, CompareCount{
 			data = d; 
 			next = n;    
 			}
-		
 		public E getData(){
 			return data;
 		}
 		
 		public DLLNode getNext(){
+			
 			return next; 
 		}
 	}
