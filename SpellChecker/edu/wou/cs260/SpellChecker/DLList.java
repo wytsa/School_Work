@@ -400,13 +400,11 @@ public class DLList<E>  implements List<E>, Queue<E>, CompareCount{
 		}
 		
 		public DLLNode getNext(){
-			
 			return next; 
 		}
 	}
 
 	class DLLIterator implements Iterator<E> {
- 		
  		DLLNode current = head;
  		
  		public boolean hasNext() {
@@ -421,8 +419,8 @@ public class DLList<E>  implements List<E>, Queue<E>, CompareCount{
 
 		public E next() {
  	    	if(current != null){
- 	    		E result = current.data;
  	    		current = current.next;
+ 	    		E result = current.data;
  	    		return result;
  	    	}
  	    	else{
