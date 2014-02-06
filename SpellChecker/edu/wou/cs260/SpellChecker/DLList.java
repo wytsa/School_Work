@@ -238,7 +238,6 @@ public class DLList<E>  implements List<E>, Queue<E>, CompareCount{
 
 	@Override
 	public int size() {
-		// returns the size of the list
 			return size;
 	}
 
@@ -418,6 +417,22 @@ public class DLList<E>  implements List<E>, Queue<E>, CompareCount{
  	    }
 
 		public E next() {
+/*			full next() code;
+			if (nextIndex == size){
+				throw new NoSuchElementException();
+			}
+			lastReturned = next;
+			next = next.next;
+			nextIndex++;
+			return lastReturned.element;
+*/
+
+/*			my code			
+			if(pos == size){
+				throw new NoSuchElementException();
+			}
+*/
+			
  	    	if(current != null){
  	    		current = current.next;
  	    		E result = current.data;
