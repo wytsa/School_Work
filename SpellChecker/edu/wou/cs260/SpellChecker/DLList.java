@@ -432,8 +432,7 @@ public class DLList<E>  implements List<E>, Queue<E>, CompareCount{
 				throw new NoSuchElementException();
 			}
 */
-			
- 	    	if(current != null){
+			if(current != null){
  	    		current = current.next;
  	    		E result = current.data;
  	    		return result;
@@ -446,5 +445,6 @@ public class DLList<E>  implements List<E>, Queue<E>, CompareCount{
  	    public void remove() {
  	    	DLList.this.remove(current.prev.data);
  	    }
+
  	}
 }
