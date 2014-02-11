@@ -15,7 +15,10 @@ import java.util.Set;
  */
 public class BSTreeSet<E extends Comparable<E>> implements Set<E>, CompareCount {
 
-	public BSTreeSet(){		
+	public BSTreeSet(){	
+		root = null;
+		size = 0;
+		compareCount = 0;
 	}
 	
 	private int size;
@@ -29,28 +32,25 @@ public class BSTreeSet<E extends Comparable<E>> implements Set<E>, CompareCount 
 		if(temp.item == null){
 			throw new NullPointerException();
 		}
-		else if(isEmpty()){
-			addRootEmpty(temp);
-			return true;
-		}
 		else{
-			addSubRoot(temp);
+			root = add(root, arg0);
 			return true;
 		}
-	}
-
-	private void addSubRoot(Node temp) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void addRootEmpty(Node temp) {
-		// TODO Auto-generated method stub
-		temp.height = 0;
-		root = temp;
-		size = 1;		
 	}
 	
+	private Node add(Node subTree, E item){
+		if(subTree == null){
+			size++;
+			return new Node(item);
+		}
+		else if(subTree.item.compareTo(item) < 0){// go left
+			subTree.lChild = add(subTree.lChild, item);
+		}
+		else{// go right
+			subTree.rChild = add(subTree.rChild, item);
+		}
+		return subTree;
+	}
 
 	@Override
 	public boolean addAll(Collection<? extends E> arg0) {
@@ -60,15 +60,32 @@ public class BSTreeSet<E extends Comparable<E>> implements Set<E>, CompareCount 
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
 		root = null;
 		size = 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean contains(Object arg0) {
 		// TODO Auto-generated method stub
-		return false;
+		return has(root, (E) arg0);
+		
+	}
+	
+	private Boolean has(Node subTree, E item){
+		if(subTree.item.compareTo(item) == 0){
+			compareCount++;
+			return true;
+		}
+		else if(subTree.item.compareTo(item) < 0){// go left
+			compareCount++;
+			has(subTree.lChild, item);
+		}
+		else if(subTree.item.compareTo(item) > 0){// go right
+			compareCount++;
+			has(subTree.rChild, item);
+		}
+		return null;
 	}
 
 	@Override
@@ -79,14 +96,28 @@ public class BSTreeSet<E extends Comparable<E>> implements Set<E>, CompareCount 
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		if(root == null){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
+	//@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<E> iterator() {
+		
 		// TODO Auto-generated method stub
-		return null;
+//		CREATE an new Queue<Node>
+//		Enqueue (add) only the root node
+//		WHILE ( the Queue is not empty) DO
+//			Dequeue (remove) a node from the queue
+//			With the node that was dequeued, if it has a left child, enqueue that child
+//			With the node that was dequeued, if it has a right child, enqueue that child
+//			Visit the data element from the dequeued node
+//		end while
+		return null;//new iterator();
 	}
 
 	@Override
@@ -109,8 +140,7 @@ public class BSTreeSet<E extends Comparable<E>> implements Set<E>, CompareCount 
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
 	@Override
