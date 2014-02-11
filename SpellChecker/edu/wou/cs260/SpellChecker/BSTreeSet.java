@@ -64,28 +64,26 @@ public class BSTreeSet<E extends Comparable<E>> implements Set<E>, CompareCount 
 		size = 0;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean contains(Object arg0) {
 		// TODO Auto-generated method stub
-		return has(root, (E) arg0);
+		return has(root, arg0);
 		
 	}
 	
-	private Boolean has(Node subTree, E item){
-		if(subTree.item.compareTo(item) == 0){
+	@SuppressWarnings("unchecked")
+	private Boolean has(Node subTree, Object item){
+		if(subTree.item.compareTo((E) item) == 0){
 			compareCount++;
 			return true;
 		}
-		else if(subTree.item.compareTo(item) < 0){// go left
-			compareCount++;
+		else if(subTree.item.compareTo((E) item) < 0){// go left
 			has(subTree.lChild, item);
 		}
-		else if(subTree.item.compareTo(item) > 0){// go right
-			compareCount++;
+		else{// if(subTree.item.compareTo(item) > 0){// go right
 			has(subTree.rChild, item);
 		}
-		return null;
+		return false;
 	}
 
 	@Override
